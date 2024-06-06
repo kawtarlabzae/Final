@@ -1,0 +1,13 @@
+{
+    "name": "Végétalien",
+    "description": "Un régime qui exclut tous les produits d'origine animale.",
+    "exampleFoods": [
+      "Fruits",
+      "Légumes",
+      "Légumineuses",
+      "Noix",
+      "Graines"
+    ],
+    "photo": "https://www.exemple.com/regimes/images/vegetalien.png"
+  }
+  

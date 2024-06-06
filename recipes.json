@@ -1,0 +1,63 @@
+  // Collection USERS 
+  {
+    "userID_1": {
+      "email": "utilisateur1@example.com",
+      "username": "utilisateur1",
+      "fullName": "Utilisateur Un",
+      "photoURL": "url_de_la_photo_de_profil"
+    },
+    "userID_2": {
+      "email": "utilisateur2@example.com",
+      "username": "utilisateur2",
+      "fullName": "Utilisateur Deux",
+      "photoURL": "url_de_la_photo_de_profil"
+    }
+  },
+
+  //COLLECTION RECIPES
+  {
+    "nom": "Saumon Rôti aux Asperges Rôties",
+    "description": "Un plat délicieux et nutritif, facile à préparer",
+    "ingredients": [
+      { "nom": "Filets de saumon", "quantité": 450, "unité": "g" },
+      { "nom": "Asperges vertes", "quantité": 250, "unité": "g" },
+      { "nom": "Huile d'olive", "quantité": "2 cuillères à soupe", "unité": "" },
+      { "nom": "Sel et poivre", "quantité": "au goût", "unité": "" },
+      { "nom": "Citron, en jus", "quantité": "1/2", "unité": "unité" }
+    ],
+    "instructions": [
+      "Préchauffer le four à 200°C.",
+      "Sécher les filets de saumon avec du papier absorbant et les assaisonner de sel, de poivre et d'herbes fraîches (facultatif).",
+      "Disposer les filets de saumon sur une plaque de cuisson tapissée de papier sulfurisé.",
+      "Laver et sécher les asperges vertes.",
+      "Couper les extrémités dures des asperges et les enrober d'huile d'olive.",
+      "Disposer les asperges autour des filets de saumon.",
+      "Enfourner pendant 15-20 minutes, ou jusqu'à ce que le saumon soit cuit et que les asperges soient tendres.",
+      "Servir immédiatement avec un jus de citron pressé."
+    ],
+    "temps_preparation": 10,
+    "temps_cuisson": 20,
+    "regime": "Omnivore",
+    "portions": 2,
+    "tags": ["facile", "rapide", "santé", "poisson"],
+    "image": "https://example.com/baked_salmon_asparagus.jpg",
+    "authorID": "userID_1"
+  }
+,
+//Collection commentaires
+{
+    "commentID_1": {
+      "recipeID": "recipeID_1",
+      "userID": "userID_2",
+      "comment": "J'adore cette recette ! Facile à préparer et tellement délicieuse.",
+      "timestamp": "2024-06-05T12:00:00Z"
+    },
+    "commentID_2": {
+      "recipeID": "recipeID_2",
+      "userID": "userID_1",
+      "comment": "Cette salade est devenue un incontournable à la maison. Merci pour la recette !",
+      "timestamp": "2024-06-05T13:30:00Z"
+    }
+  }
+  
+  

@@ -1,40 +1,38 @@
 <template>
-    <div class="signup">
-      <h2>Sign Up</h2>
-      <form @submit.prevent="register">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" v-model="username" required>
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" v-model="email" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" required>
-        </div>
-        <div class="form-group">
-          <label for="location">Location</label>
-          <div class="location-input">
-            
-            <div class="flag-dropdown">
-              <select v-model="selectedCountry" @change="changeFlag">
-                <option v-for="(country, index) in countries" :key="index" :value="country.name">{{ country.name }}</option>
-              </select>
-              <div class="selected-flag">
-                <img :src="selectedFlag" alt="Selected Flag" class="flag-icon">
-              </div>
-            </div>
+  <div class="signup">
+    <h2>Sign Up</h2>
+    <form @submit.prevent="register">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" v-model="username" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" v-model="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" v-model="password" required>
+      </div>
+      <div class="form-group">
+        <label for="location">Location</label>
+        <div class="location-input">
+          <select v-model="selectedCountry" @change="changeFlag">
+            <option v-for="(country, index) in countries" :key="index" :value="country.name">{{ country.name }}</option>
+          </select>
+          <div class="selected-flag">
+            <img :src="selectedFlag" alt="Selected Flag" class="flag-icon">
           </div>
         </div>
-        <button type="submit">Sign Up</button>
-        <br><br>
-        <button @click="GOOGLE()">Sign in Using Google</button>
-      </form>
-    </div>
-    
-  </template>
+      </div>
+     
+            
+      <button type="submit">Sign Up</button>
+      <br><br>
+      <button @click="GOOGLE()">Sign in Using Google</button>
+    </form>
+  </div>
+</template>
   
   <script>
   import { setUser } from '../Firebase/userstate.js';
@@ -50,7 +48,8 @@
         location: 'Morocco', // Default location set to Morocco
         countries: [], // Country data will be fetched dynamically
         selectedCountry: '',
-        selectedFlag: ''
+        selectedFlag: '',
+       
       };
     },
     created() {
@@ -98,6 +97,7 @@
         email: this.user.email,
         location: this.selectedCountry, // Update location to use selectedCountry
         user_name: this.username,
+      
       };
   
       await projectFirestore.collection('users_forum').doc(this.user.uid).set(userToAdd);
@@ -118,67 +118,78 @@
   };
   </script>
   
+
   <style scoped>
-  .flag-icon {
-    max-width: 30px; /* Set maximum width for flag icons */
-  }
-  
-  .signup {
-    max-width: 300px;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .form-group {
-    margin-bottom: 10px;
-  }
-  
-  label {
-    display: block;
-  }
-  
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  select {
-    width: 100%;
-    padding: 5px;
-    font-size: 16px;
-  }
-  select{
-    margin-left:10px;
-  }
-  
-  button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #218838;
-  }
-  
-  .location-input {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .location-input input[type="text"] {
-    flex: 1;
-  }
-  
-  .location-input select {
-    flex: 1;
-  }
-  </style>
-  
+.signup {
+  max-width: 300px;
+  margin: auto;
+  margin-top: 50px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 5px;
+  font-size: 16px;
+}
+
+select {
+  margin-left: 10px;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.location-input {
+  display: flex;
+  gap: 10px;
+}
+
+.location-input input[type="text"] {
+  flex: 1;
+}
+
+.location-input select {
+  flex: 1;
+}
+
+.dietary-checkboxes {
+  display: flex;
+  flex-wrap: wrap; /* Allow checkboxes to wrap on multiple lines */
+}
+
+.dietary-checkboxes label {
+  margin-right: 10px; /* Add spacing between checkboxes */
+}
+
+.flag-icon {
+  max-width: 30px; /* Set maximum width for flag icons */
+}
+</style>
   
   

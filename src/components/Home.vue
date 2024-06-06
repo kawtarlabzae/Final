@@ -1,28 +1,31 @@
 <template>
-  <div class="home">
-    <nav class="navbar">
-      <router-link to="/profile" class="nav-link">Profile</router-link>
-      <router-link to="/add" class="nav-link">New Discussion</router-link>
-    </nav>
-    
-    <div class="categories">
-      <div 
-        v-for="category in categories" 
-        :key="category.id" 
-        class="category"
-      >
-        <div @click="toggleDescription(category.id)" class="category-name">
-          {{ category.name }}
-        </div>
-        <div v-if="category.showDescription" class="category-description">
-          <p>{{ category.description }}</p>
-          <button @click="editCategory(category)">Edit</button>
-          <button @click="deleteCategory(category.id)">Delete</button>
+  <div class="container">
+    <header class="header">
+      <div class="logo">Cook with ease</div>
+      <nav class="navbar professional">
+        <router-link to="/profile" class="nav-link">Profile</router-link>
+        <router-link to="/signout" class="nav-link">Sign out</router-link>
+      </nav>
+    </header>
+    <div class="content">
+      <div class="categories">
+        <div v-for="category in categories" :key="category.id" class="category">
+          <div @click="recipes(category.id)" class="category-name">{{ category.nom }}</div>
         </div>
       </div>
     </div>
+    <footer class="footer">
+      <div class="footer-links">
+        <router-link to="/contact" class="footer-link">Contact</router-link>
+        <router-link to="/legal" class="footer-link">Legal</router-link>
+        <a href="https://www.facebook.com" target="_blank" class="footer-link">Facebook</a>
+        <a href="https://www.twitter.com" target="_blank" class="footer-link">Twitter</a>
+        <a href="https://www.instagram.com" target="_blank" class="footer-link">Instagram</a>
+      </div>
+    </footer>
   </div>
 </template>
+
 <script>
 import { projectFirestore } from '@/Firebase/config.js';
 
@@ -30,7 +33,7 @@ export default {
   name: 'Home',
   data() {
     return {
-      categories: []
+      categories: [],
     };
   },
   async mounted() {
@@ -39,52 +42,68 @@ export default {
       this.categories = categoriesRes.docs.map(doc => ({
         ...doc.data(),
         id: doc.id,
-        showDescription: false // Initially hide all descriptions
       }));
     } catch (err) {
       console.error(err.message);
     }
   },
   methods: {
-    toggleDescription(id) {
-      this.categories = this.categories.map(category => 
-        category.id === id 
-          ? { ...category, showDescription: !category.showDescription } 
-          : category
-      );
-    },
-    async deleteCategory(id) {
-      try {
-        await projectFirestore.collection('categories').doc(id).delete();
-        this.categories = this.categories.filter(category => category.id !== id);
-      } catch (error) {
-        console.error('Error deleting category:', error);
-      }
-    },
-    editCategory(category) {
-      this.$router.push({ name: 'EditCategory', params: { id: category.id} });
+    recipes(id) {
+      this.$router.push({ name: 'Recipe', params: { id: id } });
     }
   }
 };
-
 </script>
+
 <style scoped>
-.navbar {
-  background-color: #333;
-  padding: 10px;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.nav-link {
+.container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0a521a;
+  padding: 10px 20px;
+  width: 100%;
+}
+
+.logo {
   color: #fff;
-  margin-right: 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.navbar {
+  display: flex;
+}
+
+.navbar .nav-link {
+  color: #fff;
+  margin: 0 20px;
+  cursor: pointer;
+  font-size: 18px;
   text-decoration: none;
+  transition: opacity 0.3s ease-in-out;
 }
 
-.nav-link:hover {
-  text-decoration: underline;
+.navbar .nav-link:hover {
+  opacity: 0.8;
 }
 
-.home {
+.content {
+  flex: 1;
   padding: 20px;
 }
 
@@ -99,13 +118,13 @@ export default {
 }
 
 .category {
-  position: relative;
   flex: 1 1 300px;
   padding: 15px;
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, background-color 0.3s;
+  cursor: pointer;
 }
 
 .category:hover {
@@ -118,27 +137,42 @@ export default {
   font-weight: bold;
   color: #333;
   margin-bottom: 10px;
-  cursor: pointer;
 }
 
-.category-description {
-  font-size: 16px;
-  color: #555;
+.footer {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-top: auto; /* Ensures footer is at the bottom */
 }
 
-button {
-  padding: 10px 15px;
-  margin: 5px;
-  font-size: 14px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #555;
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer-link {
   color: #fff;
-  transition: background-color 0.3s ease;
+  text-decoration: none;
+  font-size: 16px;
+  transition: opacity 0.3s ease-in-out;
 }
 
-button:hover {
-  background-color: #444;
+.footer-link:hover {
+  opacity: 0.8;
+}
+
+/* Additional styles for responsiveness */
+@media screen and (max-width: 600px) {
+  .navbar .nav-link {
+    margin: 0 10px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 </style>

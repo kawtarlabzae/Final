@@ -23,7 +23,8 @@
     data() {
       return {
         email: '',
-        password: ''
+        password: '',
+        types:''
       };
     },
     methods: {
