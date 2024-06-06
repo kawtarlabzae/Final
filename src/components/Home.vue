@@ -1,36 +1,73 @@
 <template>
-  <nav class="navbar">
-    <router-link to="/profile" class="nav-link">Profile</router-link>
-    <router-link to="/Add_forum" class="nav-link">New Discussion</router-link>
-  </nav>
-  
+  <div class="home">
+    <nav class="navbar">
+      <router-link to="/profile" class="nav-link">Profile</router-link>
+      <router-link to="/add" class="nav-link">New Discussion</router-link>
+    </nav>
+    
+    <div class="categories">
+      <div 
+        v-for="category in categories" 
+        :key="category.id" 
+        class="category"
+      >
+        <div @click="toggleDescription(category.id)" class="category-name">
+          {{ category.name }}
+        </div>
+        <div v-if="category.showDescription" class="category-description">
+          <p>{{ category.description }}</p>
+          <button @click="editCategory(category)">Edit</button>
+          <button @click="deleteCategory(category.id)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
-
 <script>
-import { projectFirestore } from '../Firebase/config.js'
+import { projectFirestore } from '@/Firebase/config.js';
 
 export default {
-  name: 'Navbar',
-  name: 'Category',
+  name: 'Home',
   data() {
     return {
-     
+      categories: []
     };
   },
   async mounted() {
     try {
-      let categoriesRes = await projectFirestore.collection('categories').get()
-      this.categories = categoriesRes.docs.map(doc => {
-        return { ...doc.data(), id: doc.id }
-      })
+      let categoriesRes = await projectFirestore.collection('categories').get();
+      this.categories = categoriesRes.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id,
+        showDescription: false // Initially hide all descriptions
+      }));
     } catch (err) {
-      console.error(err.message)
+      console.error(err.message);
     }
   },
-  
+  methods: {
+    toggleDescription(id) {
+      this.categories = this.categories.map(category => 
+        category.id === id 
+          ? { ...category, showDescription: !category.showDescription } 
+          : category
+      );
+    },
+    async deleteCategory(id) {
+      try {
+        await projectFirestore.collection('categories').doc(id).delete();
+        this.categories = this.categories.filter(category => category.id !== id);
+      } catch (error) {
+        console.error('Error deleting category:', error);
+      }
+    },
+    editCategory(category) {
+      this.$router.push({ name: 'EditCategory', params: { id: category.id} });
+    }
+  }
 };
-</script>
 
+</script>
 <style scoped>
 .navbar {
   background-color: #333;
@@ -49,28 +86,6 @@ export default {
 
 .home {
   padding: 20px;
-}
-
-.search-bar {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.search-bar input {
-  width: 100%;
-  max-width: 600px;
-  padding: 10px 15px;
-  border: 2px solid #ddd;
-  border-radius: 25px;
-  font-size: 16px;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.search-bar input:focus {
-  border-color: #aaa;
-  box-shadow: 0 0 5px rgba(170, 170, 170, 0.5);
-  outline: none;
 }
 
 .categories {
@@ -103,23 +118,27 @@ export default {
   font-weight: bold;
   color: #333;
   margin-bottom: 10px;
-}
-
-.sub-category {
-  font-size: 14px;
-  padding: 5px 10px;
-  background-color: #e0e0e0;
-  border-radius: 10px;
-  margin-bottom: 5px;
-  transition: background-color 0.3s;
-}
-
-.sub-category:hover {
-  background-color: #ccc;
   cursor: pointer;
 }
 
-.sub-category + .sub-category {
-  margin-top: 5px;
+.category-description {
+  font-size: 16px;
+  color: #555;
+}
+
+button {
+  padding: 10px 15px;
+  margin: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #555;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #444;
 }
 </style>

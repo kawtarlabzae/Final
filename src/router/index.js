@@ -5,6 +5,8 @@ import Signin from '../components/Signin.vue';
 import HomeView from '../views/HomeView';
 import Home from '../components/Home.vue';
 import Profile from '../components/Profile.vue';
+import Add from '../components/Add.vue';
+import EditCategory from '@/components/EditCategory.vue';
 
 
 const routes = [
@@ -33,9 +35,17 @@ const routes = [
     name: 'Profile',
     component: Profile
   },
-  
- 
-  
+  {
+    path: '/add',
+    name: 'Add',
+    component: Add
+  },
+  {
+    path: '/edit-category/:id',
+    name: 'EditCategory',
+    component: EditCategory,
+    props: true
+  }, 
 ]
 
 const router = createRouter({
